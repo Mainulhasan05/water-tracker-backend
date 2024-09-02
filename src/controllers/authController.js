@@ -22,6 +22,7 @@ exports.registerUser = async (req, res, next) => {
     const user = await User.create({ name, email, password });
 
     res.status(201).json({
+        "message": "User registered successfully",
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -42,6 +43,7 @@ exports.loginUser = async (req, res, next) => {
 
     if (user && (await user.matchPassword(password))) {
       res.json({
+        "message": "User logged in successfully",
         _id: user._id,
         name: user.name,
         email: user.email,

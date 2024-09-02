@@ -46,18 +46,27 @@ exports.updateWaterLogStatus = async (req, res, next) => {
 
 // Get water logs within a date range
 exports.getWaterLogsByDate = async (req, res, next) => {
-  try {
-    const { startDate, endDate } = req.query;
-
-    const logs = await WaterLog.find({
-      date: {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      },
-    }).populate('user', 'name');
-
-    res.status(200).json(logs);
-  } catch (err) {
-    next(err);
-  }
-};
+    try {
+      // Extract startDate and endDate from query parameters
+      const { startDate, endDate } = req.query;
+  
+      // If startDate is not provided, default to the start of the current month
+      const start = startDate ? new Date(startDate) : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+      
+      // If endDate is not provided, default to the end of the current month
+      const end = endDate ? new Date(endDate) : new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0, 23, 59, 59, 999);
+  
+      // Find logs between start and end dates
+      const logs = await WaterLog.find({
+        date: {
+          $gte: start,
+          $lte: end,
+        },
+      }).populate('user', 'name');
+  
+      res.status(200).json(logs);
+    } catch (err) {
+      next(err);
+    }
+  };
+  
