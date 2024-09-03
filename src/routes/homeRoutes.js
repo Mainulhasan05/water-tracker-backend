@@ -5,6 +5,7 @@ const { protect } = require('../middlewares/authMiddleware');
 
 // Get dashboard
 router.get('/dashboard',  homeController.getDashboard);
+router.get('/history',  homeController.getHistory);
 
 
 module.exports = router;
