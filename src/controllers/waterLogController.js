@@ -3,10 +3,11 @@ const WaterLog = require('../models/WaterLog');
 // Create a water log entry
 exports.createWaterLog = async (req, res, next) => {
   try {
-    const { numberOfJugs } = req.body;
+    const { numberOfJugs,user,date } = req.body;
 
     const waterLog = new WaterLog({
-      user: req.user._id,
+      user,
+      date,
       numberOfJugs,
     });
 

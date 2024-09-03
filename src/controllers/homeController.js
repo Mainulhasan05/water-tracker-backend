@@ -6,7 +6,7 @@ exports.getDashboard=async(req,res)=>{
         // get all users
         const users=await User.find({});
         // get all water logs
-        const waterLogs=await WaterLog.find({});
+        const waterLogs=await WaterLog.find({}).populate('user');
         // get total water consumed
         let totalWaterConsumed=0;
         waterLogs.forEach((log)=>{

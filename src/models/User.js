@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'], // Define roles
     default: 'user',
   },
+},{
+  timestamps: true,
 });
 
 // Password hashing middleware
