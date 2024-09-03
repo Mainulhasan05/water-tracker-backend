@@ -4,6 +4,7 @@ const cors = require('cors');
 const connectDB = require('./db_config/db');
 const userRoutes = require('./routes/userRoutes');
 const waterLogRoutes = require('./routes/waterLogRoutes');
+const homeRoutes = require('./routes/homeRoutes');
 const authRoutes = require('./routes/authRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
     });
 
 // Routes
+app.use('/api', homeRoutes);
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', waterLogRoutes);
