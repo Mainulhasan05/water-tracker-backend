@@ -5,15 +5,25 @@ exports.createWaterLog = async (req, res, next) => {
   try {
     const { numberOfJugs,user,date } = req.body;
 
-    const waterLog = new WaterLog({
+    const waterLog = await WaterLog.findOne({ user, date });
+    
+    if (waterLog) {
+      waterLog.numberOfJugs += numberOfJugs;
+      waterLog.updatedBy = req.user._id;
+      await waterLog.save();
+      return res.status(201).json(waterLog);
+    }
+
+    const newWaterLog = new WaterLog({
       user,
       date,
       numberOfJugs,
+      updatedBy: req.user._id,
     });
 
-    await waterLog.save();
+    await newWaterLog.save();
 
-    res.status(201).json(waterLog);
+    res.status(201).json(newWaterLog);
   } catch (err) {
     next(err);
   }

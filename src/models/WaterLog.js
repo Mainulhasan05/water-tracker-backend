@@ -14,6 +14,10 @@ const waterLogSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
 }, {
   timestamps: true,
 });

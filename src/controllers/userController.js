@@ -1,5 +1,5 @@
 const User = require('../models/User');
-
+const WaterLog=require('../models/WaterLog');
 // Update user information
 exports.updateUser = async (req, res, next) => {
   try {
@@ -19,6 +19,29 @@ exports.updateUser = async (req, res, next) => {
     await user.save();
 
     res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+// req.user._id , get own history of water logs with proper pagination
+exports.getOwnWaterLogs = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 50 } = req.query;
+
+    const waterLogs = await WaterLog.find({ user: req.user._id })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .populate('user');
+
+    const count = await WaterLog.countDocuments({ user: req.user._id });
+
+    res.status(200).json({
+      waterLogs,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+    });
   } catch (err) {
     next(err);
   }
